@@ -5,10 +5,18 @@ from PIL import Image
 import glob
 
 class ImageDataset(Dataset):
-    def __init__(self, root_monet, root_photo, transform=None):
+    def __init__(self, monet_files, photo_files, transform=None):
         self.transform = transform
-        self.monet_files = sorted(glob.glob(os.path.join(root_monet, "*.*")))
-        self.photo_files = sorted(glob.glob(os.path.join(root_photo, "*.*")))
+        # Allow passing directories (str) or lists of files (list)
+        if isinstance(monet_files, str):
+            self.monet_files = sorted(glob.glob(os.path.join(monet_files, "*.*")))
+        else:
+            self.monet_files = monet_files
+            
+        if isinstance(photo_files, str):
+            self.photo_files = sorted(glob.glob(os.path.join(photo_files, "*.*")))
+        else:
+            self.photo_files = photo_files
         
         # Make sure we can iterate even if lengths differ
         self.len_monet = len(self.monet_files)
@@ -46,4 +54,3 @@ def get_transforms(load_size=286, crop_size=256):
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ]
     return transforms.Compose(transform_list)
-
