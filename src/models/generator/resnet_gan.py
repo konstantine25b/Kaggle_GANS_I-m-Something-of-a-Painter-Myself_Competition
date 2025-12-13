@@ -18,19 +18,23 @@ class ResNetBlock(nn.Module):
         return x + self.conv_block(x)
 
 class ResNetGenerator(nn.Module):
-    def __init__(self, input_nc=3, output_nc=3, n_blocks=9, n_downsampling=2):
+    def __init__(self, input_nc=3, output_nc=3, ngf=32, n_blocks=6, n_downsampling=2):
+        """
+        ngf: Number of generator filters (default 32 for speed, standard is 64)
+        n_blocks: 6 for speed/128x128, 9 for quality/256x256
+        """
         super(ResNetGenerator, self).__init__()
         
         # Initial convolution
         model = [
             nn.ReflectionPad2d(3),
-            nn.Conv2d(input_nc, 64, kernel_size=7, padding=0),
-            nn.InstanceNorm2d(64),
+            nn.Conv2d(input_nc, ngf, kernel_size=7, padding=0),
+            nn.InstanceNorm2d(ngf),
             nn.ReLU(True)
         ]
 
         # Downsampling
-        in_features = 64
+        in_features = ngf
         out_features = in_features * 2
         for _ in range(n_downsampling):
             model += [
@@ -59,7 +63,7 @@ class ResNetGenerator(nn.Module):
         # Output layer
         model += [
             nn.ReflectionPad2d(3),
-            nn.Conv2d(64, output_nc, kernel_size=7, padding=0),
+            nn.Conv2d(ngf, output_nc, kernel_size=7, padding=0),
             nn.Tanh()
         ]
 
@@ -67,4 +71,3 @@ class ResNetGenerator(nn.Module):
 
     def forward(self, x):
         return self.model(x)
-

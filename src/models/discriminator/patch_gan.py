@@ -2,7 +2,10 @@ import torch
 import torch.nn as nn
 
 class PatchDiscriminator(nn.Module):
-    def __init__(self, input_nc=3, ndf=64, n_layers=3):
+    def __init__(self, input_nc=3, ndf=32, n_layers=3):
+        """
+        ndf: Number of discriminator filters (default 32 for speed, standard is 64)
+        """
         super(PatchDiscriminator, self).__init__()
         
         # 70x70 PatchGAN
@@ -39,4 +42,3 @@ class PatchDiscriminator(nn.Module):
 
     def forward(self, x):
         return self.model(x)
-
