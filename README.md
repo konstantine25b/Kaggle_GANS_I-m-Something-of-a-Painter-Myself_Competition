@@ -1,4 +1,22 @@
 # I'm Something of a Painter Myself - CycleGAN
+gi
+## Results
+
+We achieved significant improvements by switching from ResNet to U-Net architectures and tuning augmentations.
+
+### Performance Summary
+
+| Experiment | Generator          | Score (MiFID) | Notes                                                  |
+| ---------- | ------------------ | ------------- | ------------------------------------------------------ |
+| **Exp 3**  | **U-Net (ngf=32)** | **77.55874**  | **Best Performance (65th Place)**. Used augmentations. |
+| Exp 4      | U-Net (ngf=16)     | 77.80592      | Very close to best. **No augmentations used**.         |
+| Exp 2      | ResNet             | 85.47171      | Baseline performance (82nd Place). Used augmentations. |
+
+### Leaderboard Proof
+
+Below is the screenshot showing our scores across different experiments:
+
+![Leaderboard Scores](fsdgbdg.png)
 
 ## Competition Overview
 
@@ -38,6 +56,7 @@ We conducted multiple experiments to optimize the style transfer quality, focusi
 
 - **Architecture**: `ResNetGenerator`
 - **Goal**: Establish a strong baseline using the standard CycleGAN architecture.
+- **Augmentation**: Used standard augmentations (Random Flip, Rotate, Crop).
 - **Technical Specs**:
   - **Encoder**:
     - 7x7 Conv (Reflection Pad), InstanceNorm, ReLU.
@@ -50,45 +69,31 @@ We conducted multiple experiments to optimize the style transfer quality, focusi
     - Output layer: 7x7 Conv, Tanh activation.
   - **Filters**: Started with `ngf=32` filters.
 
-#### Experiment 3 & 4: U-Net-based Generator
+#### Experiment 3: U-Net-based Generator (Best Score)
 
 - **Architecture**: `UNetGenerator`
-- **Goal**: Test if U-Net's skip connections improve the sharpness and detail retention of the generated paintings compared to ResNet.
+- **Goal**: Test if U-Net's skip connections improve detail retention.
+- **Augmentation**: Used standard augmentations (Random Flip, Rotate, Crop).
 - **Technical Specs**:
-  - **Structure**: Encoder-Decoder network with skip connections between mirrored layers.
-  - **Encoder (Down)**:
-    - 4x4 Conv (stride 2), LeakyReLU (0.2).
-    - Instance Normalization applied after the first layer.
-  - **Decoder (Up)**:
-    - 4x4 Transposed Conv (stride 2), ReLU.
-    - Instance Normalization.
-    - Concatenates output with the corresponding encoder feature map (Skip Connection).
-    - Dropout (50%) used in some intermediate layers.
+  - **Structure**: Encoder-Decoder network with skip connections.
   - **Depth**: `num_downs=6` layers deep.
-  - **Filters**: Used `ngf=32` (Exp 3) and `ngf=16` (Exp 4).
+  - **Filters**: `ngf=32`.
 
-## Results
+#### Experiment 4: U-Net-based Generator (No Augmentations)
 
-We achieved significant improvements by switching from ResNet to U-Net architectures.
-
-### Performance Summary
-
-| Experiment | Generator          | Score (MiFID) | Notes                                  |
-| ---------- | ------------------ | ------------- | -------------------------------------- |
-| **Exp 3**  | **U-Net (ngf=32)** | **77.55874**  | **Best Performance (65th Place)**      |
-| Exp 4      | U-Net (ngf=16)     | 77.80592      | Very close to best, reduced parameters |
-| Exp 2      | ResNet             | 85.47171      | Baseline performance (82nd Place)      |
-
-### Leaderboard Proof
-
-Below is the screenshot showing our scores across different experiments:
-
-![Leaderboard Scores](fsdgbdg.png)
+- **Architecture**: `UNetGenerator`
+- **Goal**: Test model performance without augmentations to isolate architecture benefits.
+- **Augmentation**: **None** (Only Resize & Normalize).
+- **Technical Specs**:
+  - **Structure**: Same U-Net architecture as Exp 3.
+  - **Filters**: `ngf=16` (Reduced capacity).
 
 ## "All Stuff" - Implementation Details
 
 - **Training**: Models were trained on the provided dataset of Monet paintings (300 images) and photos (7000+ images).
-- **Augmentation**: Basic resizing and normalization were applied. Some experiments explored additional augmentations but the reported scores utilize standard preprocessing.
+- **Augmentation**:
+  - **Exp 2 & 3**: Utilized data augmentation techniques to improve generalization.
+  - **Exp 4**: No augmentations were applied to test the pure capability of the U-Net architecture.
 - **Evaluation**: The models were evaluated using the MiFID metric on the Kaggle leaderboard.
 
 ## Usage
