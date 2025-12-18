@@ -6,11 +6,11 @@ We achieved significant improvements by switching from ResNet to U-Net architect
 
 ### Performance Summary
 
-| Experiment | Generator          | Parameters | Score (MiFID) | Notes                                                  |
-| ---------- | ------------------ | ---------- | ------------- | ------------------------------------------------------ |
-| **Exp 3**  | **U-Net (ngf=32)** | **~7.0M**  | **77.55874**  | **Best Performance (65th Place)**. Used augmentations. |
-| Exp 4      | U-Net (ngf=16)     | ~1.8M      | 77.80592      | Very close to best. **No augmentations used**.         |
-| Exp 2      | ResNet             | ~1.9M      | 85.47171      | Baseline performance (82nd Place). Used augmentations. |
+| Experiment | Generator          | Parameters | Score (MiFID) | Notes                                                                                       |
+| ---------- | ------------------ | ---------- | ------------- | ------------------------------------------------------------------------------------------- |
+| **Exp 3**  | **U-Net (ngf=32)** | **~7.0M**  | **77.55874**  | **Best Performance (65th Place)**. Used augmentations.                                      |
+| Exp 4      | U-Net (ngf=16)     | ~1.8M      | 77.80592      | Very close to best. **No augmentations used**.                                              |
+| Exp 2      | ResNet             | ~1.9M      | 85.47171      | Baseline performance (82nd Place). Used augmentations. [Full Report](README_resnet_exp2.md) |
 
 ### Leaderboard Proof
 
