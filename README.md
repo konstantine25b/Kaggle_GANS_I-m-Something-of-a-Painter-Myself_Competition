@@ -1,16 +1,16 @@
 # I'm Something of a Painter Myself - CycleGAN
-gi
+
 ## Results
 
 We achieved significant improvements by switching from ResNet to U-Net architectures and tuning augmentations.
 
 ### Performance Summary
 
-| Experiment | Generator          | Score (MiFID) | Notes                                                  |
-| ---------- | ------------------ | ------------- | ------------------------------------------------------ |
-| **Exp 3**  | **U-Net (ngf=32)** | **77.55874**  | **Best Performance (65th Place)**. Used augmentations. |
-| Exp 4      | U-Net (ngf=16)     | 77.80592      | Very close to best. **No augmentations used**.         |
-| Exp 2      | ResNet             | 85.47171      | Baseline performance (82nd Place). Used augmentations. |
+| Experiment | Generator          | Parameters | Score (MiFID) | Notes                                                  |
+| ---------- | ------------------ | ---------- | ------------- | ------------------------------------------------------ |
+| **Exp 3**  | **U-Net (ngf=32)** | **~7.0M**  | **77.55874**  | **Best Performance (65th Place)**. Used augmentations. |
+| Exp 4      | U-Net (ngf=16)     | ~1.8M      | 77.80592      | Very close to best. **No augmentations used**.         |
+| Exp 2      | ResNet             | ~1.9M      | 85.47171      | Baseline performance (82nd Place). Used augmentations. |
 
 ### Leaderboard Proof
 
@@ -50,11 +50,17 @@ We conducted multiple experiments to optimize the style transfer quality, focusi
   - Identity Loss: L1 Loss (lambda=5) to preserve color palette.
 - **Data Processing**: Images resized to 256x256, normalized to [-1, 1].
 
-### Experiment Details
+### Experiment Details & Parameter Calculation
 
 #### Experiment 1 & 2: ResNet-based Generator
 
 - **Architecture**: `ResNetGenerator`
+- **Parameter Count**: **~1.9 Million**
+- **Calculation**:
+  - The bulk of parameters comes from the **6 Residual Blocks** in the bottleneck.
+  - Each block has two 3x3 convolution layers with 128 filters.
+  - Approx: $6 \text{ blocks} \times 2 \text{ layers} \times (128 \times 128 \times 3 \times 3) \approx 1.77\text{M}$ params.
+  - Encoder/Decoder layers add the remaining ~0.13M.
 - **Goal**: Establish a strong baseline using the standard CycleGAN architecture.
 - **Augmentation**: Used standard augmentations (Random Flip, Rotate, Crop).
 - **Technical Specs**:
@@ -72,21 +78,34 @@ We conducted multiple experiments to optimize the style transfer quality, focusi
 #### Experiment 3: U-Net-based Generator (Best Score)
 
 - **Architecture**: `UNetGenerator`
+- **Parameter Count**: **~7.0 Million**
+- **Calculation**:
+  - U-Net is deeper and uses **Skip Connections**.
+  - The skip connections concatenate encoder features with decoder features, doubling the input depth for upsampling layers.
+  - A single upsampling layer (e.g., handling 512 input channels -> 256 output channels with 4x4 kernel) alone contributes $\approx 2\text{M}$ parameters ($512 \times 256 \times 4 \times 4$).
+  - Summing all downsampling and concatenated upsampling layers yields the ~7.0M total.
 - **Goal**: Test if U-Net's skip connections improve detail retention.
 - **Augmentation**: Used standard augmentations (Random Flip, Rotate, Crop).
 - **Technical Specs**:
   - **Structure**: Encoder-Decoder network with skip connections.
   - **Depth**: `num_downs=6` layers deep.
   - **Filters**: `ngf=32`.
+  - **Key Feature**: Skip connections propagate low-level features directly to the decoder, preserving sharpness better than the ResNet bottleneck.
 
 #### Experiment 4: U-Net-based Generator (No Augmentations)
 
 - **Architecture**: `UNetGenerator`
+- **Parameter Count**: **~1.8 Million**
+- **Calculation**:
+  - Same architecture as Exp 3, but **base filters (`ngf`) reduced from 32 to 16**.
+  - Parameter count scales with the square of the filter reduction factor ($0.5^2 = 0.25$).
+  - $7.0\text{M} \times 0.25 \approx 1.75\text{M}$.
 - **Goal**: Test model performance without augmentations to isolate architecture benefits.
 - **Augmentation**: **None** (Only Resize & Normalize).
 - **Technical Specs**:
-  - **Structure**: Same U-Net architecture as Exp 3.
+  - **Structure**: Same U-Net architecture as Exp 3 but with fewer filters.
   - **Filters**: `ngf=16` (Reduced capacity).
+  - **Observation**: Even with 1/4 of the parameters of Exp 3 and no augmentation, this model performed exceptionally well, suggesting the U-Net inductive bias is well-suited for this task.
 
 ## "All Stuff" - Implementation Details
 
