@@ -10,7 +10,7 @@ We achieved significant improvements by switching from ResNet to U-Net architect
 | ---------- | ------------------ | ---------- | ------------- | ------------------------------------------------------------------------------------------- |
 | **Exp 3**  | **U-Net (ngf=32)** | **~7.0M**  | **77.55874**  | **Best Performance (65th Place)**. Used augmentations.                                      |
 | Exp 4      | U-Net (ngf=16)     | ~1.8M      | 77.80592      | Very close to best. **No augmentations used**.                                              |
-| Exp 2      | ResNet             | ~1.9M      | 85.47171      | Baseline performance (82nd Place). Used augmentations. [Full Report](README_resnet_exp2.md) |
+| Exp 2      | ResNet             | ~1.9M      | 85.47171      | Baseline performance (82nd Place). Used augmentations. [https://wandb.ai/konstantine25b-free-university-of-tbilisi-/Monet_GAN_Eval_Exp2/reports/Experiment-2-Report-ResNet-Baseline--VmlldzoxNTQwNjUwNg?accessToken=c52i1s7z1ioqjl6j088uwusrkqvp9kqs0jj6rnnrwqi6181qr9i9uhy7tvwxxqo2](README_resnet_exp2.md) |
 
 ### Leaderboard Proof
 
