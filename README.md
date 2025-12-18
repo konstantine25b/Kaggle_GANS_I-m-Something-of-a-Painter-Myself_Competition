@@ -9,8 +9,7 @@ We achieved significant improvements by switching from ResNet to U-Net architect
 | Experiment | Generator          | Parameters | Score (MiFID) | Notes                                                                                       |
 | ---------- | ------------------ | ---------- | ------------- | ------------------------------------------------------------------------------------------- |
 | **Exp 3**  | **U-Net (ngf=32)** | **~7.0M**  | **77.55874**  | **Best Performance (65th Place)**. Used augmentations.   [https://wandb.ai/konstantine25b-free-university-of-tbilisi-/Monet_GAN_Eval_Exp3_UNet/reports/Experiment-3-Report-U-Net-Generator--VmlldzoxNTQwODkzMg?accessToken=t7sy6incngwn8091mm1a8tpm2f0d0rv6x26hvmg96vt8s43muhqjxa2094gvcgnk]                                   |
-| Exp 4      | U-Net (ngf=16)     | ~1.8M      | 77.80592      | Very close to best. **No augmentations used**.    [https://wandb.ai/konstantine25b-free-university-of-tbilisi-/Monet_GAN_Eval_Exp4_UNet/reports/Experiment-4-Report-U-Net-Small-No-Augmentation---VmlldzoxNTQwOTAxOA?accessToken=abwudys2be9st6u3b9p9eeva5prpc7nvo3plhqnrdb8p2jedaw2q0e80khxw4bgi]   
-                                       |
+| Exp 4      | U-Net (ngf=16)     | ~1.8M      | 77.80592      | Very close to best. **No augmentations used**.    [https://wandb.ai/konstantine25b-free-university-of-tbilisi-/Monet_GAN_Eval_Exp4_UNet/reports/Experiment-4-Report-U-Net-Small-No-Augmentation---VmlldzoxNTQwOTAxOA?accessToken=abwudys2be9st6u3b9p9eeva5prpc7nvo3plhqnrdb8p2jedaw2q0e80khxw4bgi]                                          
 | Exp 2      | ResNet             | ~1.9M      | 85.47171      | Baseline performance (82nd Place). Used augmentations. [https://wandb.ai/konstantine25b-free-university-of-tbilisi-/Monet_GAN_Eval_Exp2/reports/Experiment-2-Report-ResNet-Baseline--VmlldzoxNTQwNjUwNg?accessToken=c52i1s7z1ioqjl6j088uwusrkqvp9kqs0jj6rnnrwqi6181qr9i9uhy7tvwxxqo2](README_resnet_exp2.md) |
 
 ### Leaderboard Proof
